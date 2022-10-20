@@ -24,7 +24,8 @@ jobs:
           distribution: 'adopt'
       - name: Build with Gradle
         run: ./gradlew clean test build
-      - uses: actions/upload-artifact@v2
+      - uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
         with:
+          arguments: build
           name: artifacts
           path: build/release/*
