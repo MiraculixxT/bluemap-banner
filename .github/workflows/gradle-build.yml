@@ -23,8 +23,7 @@ jobs:
           java-version: '16'
           distribution: 'adopt'
       - name: Build with Gradle
-        run: ./gradlew clean test build
-      - uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      - uses: actions/upload-artifact@v2
         with:
           arguments: build
           name: artifacts
