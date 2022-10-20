@@ -1,0 +1,35 @@
+# The Marker-Set label, where all markers are stored.
+# Value: Short Text
+marker-set-label: "Banner Marker"
+
+# If all banner markers should be visible by default.
+# If false, users can enable the Marker-Set manually to see all markers.
+# Value: true / false
+marker-set-visible: true
+
+# If the Marker-Set should be toggleable.
+# If false, users are forced to use the setting above.
+# Value: true / false
+marker-set-toggleable: true
+
+# Block other players from breaking your banner marker.
+# Bypass Permission: banner-marker.event.break-others
+# Value: true / false
+block-others-break: false
+
+# The maximum amount of banner markers a player can set.
+# This only blocks NEW marker!
+# Set to -1 for no limit (unlimited markers)
+# Value: integer
+max-marker-per-player: -1
+
+# If players should be notified about marker updates they trigger.
+# Change those messages in the messages.yml file.
+# Value: true / false
+notify-player: true
+
+# You can disable some worlds to block players from placing markers.
+# Add a new dash with the name of your world to block it.
+disabled-worlds:
+  - "name-of-block-world"
+  - "different blocked world"

@@ -1,0 +1,23 @@
+#-----------------------------------------------#
+# This plugin uses MiniMessages from Adventure  #
+#           to display messages!                #
+#                                               #
+# Generator: https://webui.adventure.kyori.net  #
+#-----------------------------------------------#
+# Some messages contains placeholder for inputs #
+#           you can use - <input-i>             #
+#-----------------------------------------------#
+
+event:
+  # Input 1 -> Max Amount
+  limited: "<red>You reached your max amount of markers! <dark_gray>(<gray><input-1></gray>)\nSneak to place it without any marker"
+  # Input 1 -> Current Amount | Input 2 -> Max Amount
+  place: "<gray>You created a new marker on the Web-Map! <dark_gray>(<gray><input-1>/<input-2></gray>)"
+  break: "<gray>You removed your marker on the Web-Map! <dark_gray>(<gray><input-1>/<input-2></gray>)"
+  # Input 1 -> World Name
+  blocked-world: "<red>This world is disabled!"
+
+command:
+  no-player: "<red>This command only works for players!"
+  # Input 1 -> Player Name
+  no-marker: "<red>The player <underlined><input-1></underlined> has no markers!"
