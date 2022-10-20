@@ -23,7 +23,7 @@ jobs:
           java-version: '16'
           distribution: 'adopt'
       - name: Build with Gradle
-      - uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v2
         with:
           arguments: build
           name: artifacts
