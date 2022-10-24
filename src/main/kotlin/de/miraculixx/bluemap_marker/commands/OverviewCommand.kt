@@ -1,24 +1,26 @@
 package de.miraculixx.bluemap_marker.commands
 
+import de.miraculixx.bluemap_marker.PluginManager
 import de.miraculixx.bluemap_marker.map.MarkerManager
 import de.miraculixx.bluemap_marker.map.gui.storageBuilder
 import de.miraculixx.bluemap_marker.utils.messages.*
 import net.axay.kspigot.extensions.bukkit.register
 import net.axay.kspigot.extensions.onlinePlayers
 import net.axay.kspigot.extensions.worlds
+import net.axay.kspigot.items.customModel
 import net.axay.kspigot.items.itemStack
 import net.axay.kspigot.items.meta
 import net.axay.kspigot.items.name
 import net.kyori.adventure.text.Component
-import org.bukkit.Bukkit
-import org.bukkit.Material
-import org.bukkit.Sound
-import org.bukkit.World
+import net.kyori.adventure.text.format.NamedTextColor
+import org.bukkit.*
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabExecutor
 import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.SkullMeta
+import org.bukkit.persistence.PersistentDataType
+import java.util.*
 
 class OverviewCommand : TabExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
@@ -27,14 +29,10 @@ class OverviewCommand : TabExecutor {
             return false
         }
 
-
-        val markers = if (args.isEmpty()) MarkerManager.getMarkers(sender.uniqueId)
-        else {
-            val target = Bukkit.getOfflinePlayer(args[0])
-            MarkerManager.getMarkers(target.uniqueId)
-        }
+        val target = if (args.isEmpty()) sender else Bukkit.getOfflinePlayer(args[0])
+        val markers = MarkerManager.getMarkers(target.uniqueId)
         if (markers.isEmpty()) {
-            sender.sendMessage(msg("command.no-marker", listOf(sender.name)))
+            sender.sendMessage(msg("command.no-marker", listOf(target.name ?: "Unknown")))
             return false
         }
 
@@ -44,13 +42,14 @@ class OverviewCommand : TabExecutor {
             title = cmp("Banner Markers - ", cHighlight, bold = true) + cmp(sender.name, cHighlight)
             header = itemStack(Material.PLAYER_HEAD) {
                 meta<SkullMeta> {
-                    owningPlayer = sender
-                    name = cmp("$sender's Marker", cHighlight, bold = true)
+                    owningPlayer = target
+                    name = cmp("${target.name}'s Marker", cHighlight, bold = true)
+                    lore(listOf(cmp(target.uniqueId.toString(), NamedTextColor.DARK_GRAY)))
                 }
             }
             filterable = true
             items = buildList {
-                markers.forEach { (worldName, marker) ->
+                markers.forEach { (marker, worldName) ->
                     val world = worlds.firstOrNull { it.name.equals(worldName, true) } ?: return@forEach
                     val material = when (world.environment) {
                         World.Environment.NORMAL -> Material.GRASS_BLOCK
@@ -62,13 +61,20 @@ class OverviewCommand : TabExecutor {
                         itemStack(material) {
                             meta {
                                 name = cmp(marker.label, cHighlight)
+                                customModel = 1
                                 val vector = marker.position
+                                persistentDataContainer.set(
+                                    NamespacedKey(PluginManager, "marker-${UUID.randomUUID()}"),
+                                    PersistentDataType.STRING,
+                                    "${vector.x}:${vector.y}:${vector.z}:$worldName:${target.uniqueId}"
+                                )
                                 lore(
                                     listOf(
                                         cmp("World: ", cMark) + cmp(world.name),
                                         cmp("Location: ", cMark) + cmp("${vector.x} ${vector.y} ${vector.z}"),
                                         cmp("Marker Type: ", cMark) + cmp(marker.type),
                                         Component.empty(),
+                                        cmp("Click » ") + cmp("Teleport", cMark),
                                         cmp("Shift Click » ") + cmp("Delete Marker", cMark)
                                     )
                                 )

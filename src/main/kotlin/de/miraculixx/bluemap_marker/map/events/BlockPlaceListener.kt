@@ -26,7 +26,8 @@ class BlockPlaceListener : Listener<BlockPlaceEvent> {
         val blockedWorlds = config.getStringList("disabled-worlds")
         val worldName = player.world.name
         if (blockedWorlds.contains(worldName)) {
-            if (config.getBoolean("notify-player")) player.sendMessage(msg("blocked-world", input = listOf(worldName)))
+            if (config.getBoolean("notify-player")) player.sendMessage(msg("blocked-world", listOf(worldName)))
+            return@listen
         }
 
         val max = config.getInt("max-marker-per-player")
@@ -39,7 +40,7 @@ class BlockPlaceListener : Listener<BlockPlaceEvent> {
             return@listen
         }
 
-        if (config.getBoolean("notify-player")) player.sendMessage(msg("event.place", listOf(markerCount.toString(), max.toString())))
+        if (config.getBoolean("notify-player")) player.sendMessage(msg("event.place", listOf(markerCount.plus(1).toString(), max.toString())))
 
         val item = it.itemInHand
         val name = item.itemMeta?.name ?: return@listen
@@ -65,12 +66,15 @@ class BlockPlaceListener : Listener<BlockPlaceEvent> {
         }
         val icon = bannerImages[color]
 
-        val newMarker = POIMarker.toBuilder()
-            .label(plainSerializer.serialize(name))
-            .icon(icon, 0, 0)
-            .maxDistance(500.0)
-            .position(block.x, block.y, block.z)
-            .build()
+        val newMarker = POIMarker.toBuilder().apply {
+            val labelAddition = config.getString("label-suffix")?.replace("<player>", player.name) ?: ""
+            label(plainSerializer.serialize(name) + labelAddition)
+            icon(icon, 0, 0)
+            position(block.x, block.y, block.z)
+
+            val maxDistance = config.getDouble("max-view-distance")
+            if (maxDistance > 0) maxDistance(maxDistance)
+        }.build()
 
         MarkerManager.addMarker(newMarker, block.world.name, uuid)
     }

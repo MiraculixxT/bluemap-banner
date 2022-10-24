@@ -8,13 +8,8 @@ import net.kyori.adventure.text.format.NamedTextColor
 val prefix = cmp("BannerMarker", cHighlight) + cmp(" >> ", NamedTextColor.DARK_GRAY)
 
 fun msg(key: String, input: List<String> = emptyList(), withPrefix: Boolean = true): Component {
-    return miniMessages.deserialize(
-        buildString {
-            val config = ConfigManager.getConfig(Configs.LANGUAGE)
-            if (withPrefix) append(prefix)
-            append(config.getString(key))
-            if (isBlank()) append("<red>$key</red>")
-            input.forEachIndexed { index, input -> replace(Regex(".*<input-$index>.*"), input) }
-        }
-    )
+    val config = ConfigManager.getConfig(Configs.LANGUAGE)
+    var buildString = config.getString(key) ?: "<red>$key</red>"
+    input.forEachIndexed { index, i -> buildString = buildString.replace("<input-${index + 1}>", i) }
+    return if (withPrefix) prefix else { emptyComponent() } + miniMessages.deserialize(buildString)
 }

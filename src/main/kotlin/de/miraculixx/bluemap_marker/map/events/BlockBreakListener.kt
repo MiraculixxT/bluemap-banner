@@ -5,7 +5,7 @@ import de.miraculixx.bluemap_marker.map.MarkerManager
 import de.miraculixx.bluemap_marker.utils.config.ConfigManager
 import de.miraculixx.bluemap_marker.utils.config.Configs
 import de.miraculixx.bluemap_marker.utils.interfaces.MultiListener
-import de.miraculixx.bluemap_marker.utils.messages.*
+import de.miraculixx.bluemap_marker.utils.messages.msg
 import net.axay.kspigot.event.SingleListener
 import net.axay.kspigot.event.listen
 import net.axay.kspigot.event.register
@@ -22,18 +22,12 @@ class BlockBreakListener : MultiListener<BlockBreakEvent> {
         val config = ConfigManager.getConfig(Configs.SETTINGS)
         if (!block.type.name.endsWith("_BANNER")) return@listen
         val vector = Vector3d.from(block.x.toDouble(), block.y.toDouble(), block.z.toDouble())
-        if (config.getBoolean("block-others-break")) {
-            val markerOwner = MarkerManager.getMarkerOwner(vector)
-            if (markerOwner != player.uniqueId) {
-                it.isCancelled = true
-                player.sendMessage(prefix + cmp("This is not your Marker!", cError))
-                return@listen
-            }
-        }
+        val markerOwner = MarkerManager.getMarkerOwner(vector)
 
         val max = config.getInt("max-marker-per-player")
         val markerCount = MarkerManager.getMarkers(uuid).size
-        if (config.getBoolean("notify-player")) player.sendMessage(msg("event.break", listOf(markerCount.toString(), max.toString())))
+        if (markerOwner == player.uniqueId && config.getBoolean("notify-player"))
+            player.sendMessage(msg("event.break", listOf(markerCount.minus(1).toString(), max.toString())))
 
         MarkerManager.removeMarker(vector, block.world.name, uuid)
     }

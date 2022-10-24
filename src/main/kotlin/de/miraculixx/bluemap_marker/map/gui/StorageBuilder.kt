@@ -153,7 +153,7 @@ class StorageGUI(
         }
 
         //Filter Apply
-        if (filterName != null) {
+        if (filterable) {
             inventory.setItem(49, itemStack(Material.HOPPER) {
                 meta {
                     customModel = 205
@@ -162,7 +162,7 @@ class StorageGUI(
                         listOf(
                             emptyComponent(),
                             cmp("Filter", cHighlight, underlined = true),
-                            cmp("∙ $finalFilter"),
+                            cmp("∙ ${filterName ?: "No Filter"}"),
                             emptyComponent(),
                             cmp("Click ", cHighlight) + cmp("≫ Change Filter")
                             )
@@ -198,7 +198,7 @@ class StorageGUI(
         val lightHolder = itemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE) { meta { name = emptyComponent() } }
         (0..8).forEach { inventory.setItem(it, darkHolder) }
         (9..53).forEach { inventory.setItem(it, lightHolder) }
-        if (scrollable || filterable) (44..53).forEach { inventory.setItem(it, darkHolder) }
+        if (scrollable || filterable) (45..53).forEach { inventory.setItem(it, darkHolder) }
     }
 
     /**

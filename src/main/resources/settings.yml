@@ -1,3 +1,7 @@
+#---------------------------------------------#
+#               Marker Settings               #
+#---------------------------------------------#
+
 # The Marker-Set label, where all markers are stored.
 # Value: Short Text
 marker-set-label: "Banner Marker"
@@ -12,8 +16,25 @@ marker-set-visible: true
 # Value: true / false
 marker-set-toggleable: true
 
+# After how many blocks away (zoomed out) banner markers disappear.
+# Set to -1.0 for unlimited vision.
+# Value: double (floating number)
+max-view-distance: -1.0
+
+# Suffix for banner markers to identify the player owner.
+# Leave it blanc for no suffix. You can use <player> as placeholder.
+# Value: string
+label-suffix: " - <player>"
+
+
+
+#---------------------------------------------#
+#          Marker Behavior Settings           #
+#---------------------------------------------#
+
 # Block other players from breaking your banner marker.
 # Bypass Permission: banner-marker.event.break-others
+# WARNING - Currently disabled because of block update bugs that causes exploits
 # Value: true / false
 block-others-break: false
 

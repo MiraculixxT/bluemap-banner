@@ -50,13 +50,13 @@ object MarkerManager {
         return null
     }
 
-    fun getMarkers(playerUUID: UUID): Map<String, POIMarker> {
+    fun getMarkers(playerUUID: UUID): Map<POIMarker, String> {
         return buildMap {
             val playerMarkers = playerMarkers[playerUUID] ?: return emptyMap()
             markerSets.forEach { (worldSet, sets) ->
                 val worldName = worldSet.removePrefix("BANNER_MARKER_")
                 sets.markers.forEach { (_, marker) ->
-                    if (playerMarkers.contains(marker.position)) (marker as? POIMarker)?.let { put(worldName, it) }
+                    if (playerMarkers.contains(marker.position)) (marker as? POIMarker)?.let { put(it, worldName) }
                 }
             }
         }
@@ -69,9 +69,9 @@ object MarkerManager {
         val folder = prepareConfigFolder()
         worlds.forEach { world ->
             val worldName = world.name
-            val markerFile = File("marker/${worldName}.json")
+            val markerFile = File("${folder.path}/${worldName}.json")
             val set = if (markerFile.exists()) {
-                logger.info("Found markers for world $worldName - Loading ${markerFile.length() / 1000}kb")
+                logger.info("Found markers for world '$worldName' - Loading ${markerFile.length() / 1000.0}kb")
                 try {
                     gson.fromJson(markerFile.readText(), MarkerSet::class.java)
                 } catch (e: JsonSyntaxException) {
@@ -95,11 +95,11 @@ object MarkerManager {
         }
         val file = File("${folder.path}/player_markers.json")
         file.createIfNotExists()
-        val playerMarkerMap = json.decodeFromString<MutableMap<UUID, MutableList<Vector3d>>>(file.readText().ifBlank { "{}" })
+        val content = file.readText()
+        val playerMarkerMap = json.decodeFromString<MutableMap<UUID, MutableList<Vector3d>>>(content) //works
         playerMarkerMap.forEach { (uuid, markers) ->
             playerMarkers[uuid] = markers
         }
-
     }
 
     fun saveAllMarker() {

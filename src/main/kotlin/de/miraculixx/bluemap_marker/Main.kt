@@ -5,6 +5,7 @@ import de.miraculixx.bluemap_marker.commands.OverviewCommand
 import de.miraculixx.bluemap_marker.map.MarkerManager
 import de.miraculixx.bluemap_marker.map.events.BlockBreakListener
 import de.miraculixx.bluemap_marker.map.events.BlockPlaceListener
+import de.miraculixx.bluemap_marker.map.gui.ClickManager
 import de.miraculixx.bluemap_marker.utils.cache.MarkerImages
 import de.miraculixx.bluemap_marker.utils.config.ConfigManager
 import de.miraculixx.bluemap_marker.utils.config.Configs
@@ -25,7 +26,7 @@ class Main : KSpigot() {
 
         // Load Content
         assetsLoader = MarkerImages()
-        listener = listOf(BlockBreakListener(), BlockPlaceListener())
+        listener = listOf(BlockBreakListener(), BlockPlaceListener(), ClickManager())
         OverviewCommand()
 
         BlueMapAPI.onEnable(onBlueMapEnable)
@@ -35,13 +36,15 @@ class Main : KSpigot() {
     override fun shutdown() {
         BlueMapAPI.unregisterListener(onBlueMapEnable)
         BlueMapAPI.unregisterListener(onBlueMapDisable)
+        MarkerManager.saveAllMarker()
+        logger.info("Successfully saved all data! Good Bye :)")
     }
 
     private val onBlueMapEnable = Consumer<BlueMapAPI> {
         logger.info("Connect to BlueMap API...")
         assetsLoader.loadImages(it)
         MarkerManager.loadAllMarker(it)
-        ConfigManager.reload(Configs.SETTINGS)
+        Configs.values().forEach { c -> ConfigManager.reload(c) }
         listener.forEach { listener -> listener.register() }
         logger.info("Successfully enabled Banner Marker addition!")
     }
