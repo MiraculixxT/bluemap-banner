@@ -24,7 +24,7 @@ jobs:
           distribution: 'adopt'
           cache: gradle
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew clean build
       - name: Create Artifacts
         uses: actions/upload-artifact@v2
         with:
