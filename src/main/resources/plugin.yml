@@ -6,6 +6,7 @@ author: Miraculixx
 website: https://miraculixx.de
 load: STARTUP
 api-version: 1.13
+folia-supported: true
 depend:
   - "BlueMap"
 libraries:
