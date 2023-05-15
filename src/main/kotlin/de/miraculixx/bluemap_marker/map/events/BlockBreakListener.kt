@@ -27,7 +27,7 @@ class BlockBreakListener : MultiListener<BlockBreakEvent> {
         val max = config.getInt("max-marker-per-player")
         val markerCount = MarkerManager.getMarkers(uuid).size
         if (markerOwner == player.uniqueId && config.getBoolean("notify-player"))
-            player.sendMessage(msg("event.break", listOf(markerCount.minus(1).toString(), max.toString())))
+            player.sendMessage(msg("event.break", listOf(markerCount.minus(1).toString(), if (max != -1) max.toString() else "∞")))
 
         MarkerManager.removeMarker(vector, block.world.name, uuid)
     }

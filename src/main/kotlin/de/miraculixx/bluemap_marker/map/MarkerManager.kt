@@ -77,6 +77,10 @@ object MarkerManager {
                 } catch (e: JsonSyntaxException) {
                     logger.warning("Marker file for world $worldName is invalid! Skipping it...")
                     return@forEach
+                }.apply {
+                    label = config.getString("marker-set-label")
+                    isToggleable = config.getBoolean("marker-set-toggleable")
+                    isDefaultHidden = !config.getBoolean("marker-set-visible")
                 }
             } else {
                 MarkerSet.builder()

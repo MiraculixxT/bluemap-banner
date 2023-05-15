@@ -6,11 +6,12 @@ import de.miraculixx.bluemap_marker.utils.cache.bannerImages
 import de.miraculixx.bluemap_marker.utils.config.ConfigManager
 import de.miraculixx.bluemap_marker.utils.config.Configs
 import de.miraculixx.bluemap_marker.utils.interfaces.Listener
-import de.miraculixx.bluemap_marker.utils.messages.msg
-import de.miraculixx.bluemap_marker.utils.messages.plainSerializer
+import de.miraculixx.bluemap_marker.utils.messages.*
+import net.axay.kspigot.chat.col
 import net.axay.kspigot.event.SingleListener
 import net.axay.kspigot.event.listen
 import net.axay.kspigot.event.register
+import net.axay.kspigot.extensions.console
 import net.axay.kspigot.items.name
 import org.bukkit.DyeColor
 import org.bukkit.Material
@@ -25,11 +26,18 @@ class BlockPlaceListener : Listener<BlockPlaceEvent> {
         val config = ConfigManager.getConfig(Configs.SETTINGS)
         val blockedWorlds = config.getStringList("disabled-worlds")
         val worldName = player.world.name
+
+        // Check if the banner has a name - Only named banners create markers
+        val item = it.itemInHand
+        val name = item.itemMeta?.name ?: return@listen
+
+        // Check blocked worlds
         if (blockedWorlds.contains(worldName)) {
             if (config.getBoolean("notify-player")) player.sendMessage(msg("blocked-world", listOf(worldName)))
             return@listen
         }
 
+        // Check max marker count
         val max = config.getInt("max-marker-per-player")
         val markerCount = MarkerManager.getMarkers(uuid).size
         if (max != -1 && markerCount >= max) {
@@ -40,10 +48,8 @@ class BlockPlaceListener : Listener<BlockPlaceEvent> {
             return@listen
         }
 
-        if (config.getBoolean("notify-player")) player.sendMessage(msg("event.place", listOf(markerCount.plus(1).toString(), max.toString())))
-
-        val item = it.itemInHand
-        val name = item.itemMeta?.name ?: return@listen
+        if (config.getBoolean("notify-player"))
+            player.sendMessage(msg("event.place",  listOf(markerCount.plus(1).toString(), if (max != -1) max.toString() else "∞")))
 
         val color = when (block.type) {
             Material.WHITE_BANNER, Material.WHITE_WALL_BANNER -> DyeColor.WHITE
@@ -66,10 +72,15 @@ class BlockPlaceListener : Listener<BlockPlaceEvent> {
         }
         val icon = bannerImages[color]
 
+        if (icon == null) {
+            console.sendMessage(prefix + cmp("Failed to load image for banner color ${color.name}! Check if 'assets/marker_${color.name}.png' exist!", cError))
+            return@listen
+        }
+
         val newMarker = POIMarker.toBuilder().apply {
             val labelAddition = config.getString("label-suffix")?.replace("<player>", player.name) ?: ""
             label(plainSerializer.serialize(name) + labelAddition)
-            icon(icon, 0, 0)
+            icon(icon.content, icon.width / 2, icon.height)
             position(block.x, block.y, block.z)
 
             val maxDistance = config.getDouble("max-view-distance")

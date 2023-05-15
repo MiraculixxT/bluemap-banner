@@ -3,11 +3,12 @@ package de.miraculixx.bluemap_marker.utils.cache
 import de.bluecolored.bluemap.api.BlueMapAPI
 import de.bluecolored.bluemap.api.WebApp
 import de.miraculixx.bluemap_marker.PluginManager
+import de.miraculixx.bluemap_marker.utils.serializer.ImageData
 import org.bukkit.DyeColor
 import java.io.File
 import javax.imageio.ImageIO
 
-lateinit var bannerImages: Map<DyeColor, String>
+lateinit var bannerImages: Map<DyeColor, ImageData>
 
 class MarkerImages {
     private val dataFolder = PluginManager.dataFolder.path
@@ -24,9 +25,10 @@ class MarkerImages {
         bannerImages = emptyMap()
     }
 
-    private fun loadImage(name: String, webApp: WebApp): String {
+    private fun loadImage(name: String, webApp: WebApp): ImageData {
         val imgFile = File("$assetsFolder/$name")
-        return webApp.createImage(ImageIO.read(imgFile), imgFile.path)
+        val image = ImageIO.read(imgFile)
+        return ImageData(webApp.createImage(image, imgFile.path), image.height, image.width)
     }
 
     init {
