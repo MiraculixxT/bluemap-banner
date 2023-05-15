@@ -7,7 +7,6 @@ import de.miraculixx.bluemap_marker.utils.config.ConfigManager
 import de.miraculixx.bluemap_marker.utils.config.Configs
 import de.miraculixx.bluemap_marker.utils.interfaces.Listener
 import de.miraculixx.bluemap_marker.utils.messages.*
-import net.axay.kspigot.chat.col
 import net.axay.kspigot.event.SingleListener
 import net.axay.kspigot.event.listen
 import net.axay.kspigot.event.register
@@ -38,7 +37,7 @@ class BlockPlaceListener : Listener<BlockPlaceEvent> {
         }
 
         // Check max marker count
-        val max = config.getInt("max-marker-per-player")
+        val max = MarkerManager.getMaxAmount(player)
         val markerCount = MarkerManager.getMarkers(uuid).size
         if (max != -1 && markerCount >= max) {
             if (!player.isSneaking) {
@@ -49,7 +48,7 @@ class BlockPlaceListener : Listener<BlockPlaceEvent> {
         }
 
         if (config.getBoolean("notify-player"))
-            player.sendMessage(msg("event.place",  listOf(markerCount.plus(1).toString(), if (max != -1) max.toString() else "∞")))
+            player.sendMessage(msg("event.place", listOf(markerCount.plus(1).toString(), if (max != -1) max.toString() else "∞")))
 
         val color = when (block.type) {
             Material.WHITE_BANNER, Material.WHITE_WALL_BANNER -> DyeColor.WHITE

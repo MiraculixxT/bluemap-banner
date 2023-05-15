@@ -11,6 +11,7 @@ import net.axay.kspigot.event.listen
 import net.axay.kspigot.event.register
 import net.axay.kspigot.runnables.taskRunLater
 import org.bukkit.Material
+import org.bukkit.Tag
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPhysicsEvent
 
@@ -24,7 +25,7 @@ class BlockBreakListener : MultiListener<BlockBreakEvent> {
         val vector = Vector3d.from(block.x.toDouble(), block.y.toDouble(), block.z.toDouble())
         val markerOwner = MarkerManager.getMarkerOwner(vector)
 
-        val max = config.getInt("max-marker-per-player")
+        val max = MarkerManager.getMaxAmount(player)
         val markerCount = MarkerManager.getMarkers(uuid).size
         if (markerOwner == player.uniqueId && config.getBoolean("notify-player"))
             player.sendMessage(msg("event.break", listOf(markerCount.minus(1).toString(), if (max != -1) max.toString() else "∞")))
@@ -34,7 +35,7 @@ class BlockBreakListener : MultiListener<BlockBreakEvent> {
 
     private val onBlockPhysics = listen<BlockPhysicsEvent>(register = false) {
         val block = it.block
-        if (!block.type.name.endsWith("_BANNER")) return@listen
+        if (!Tag.BANNERS.isTagged(block.type)) return@listen
         val loc = block.location
         // vvv This is awful. If anyone know a better solution, please DM me! vvv
         taskRunLater(1, false) {

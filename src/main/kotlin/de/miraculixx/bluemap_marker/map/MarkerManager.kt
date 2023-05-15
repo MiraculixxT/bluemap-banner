@@ -16,12 +16,15 @@ import net.axay.kspigot.extensions.bukkit.warn
 import net.axay.kspigot.extensions.console
 import net.axay.kspigot.extensions.worlds
 import net.axay.kspigot.languageextensions.kotlinextensions.createIfNotExists
+import org.bukkit.entity.Player
 import java.io.File
 import java.util.*
 
 object MarkerManager {
     private val markerSets: MutableMap<String, MarkerSet> = mutableMapOf()
     private val playerMarkers: MutableMap<UUID, MutableList<Vector3d>> = mutableMapOf()
+    private val rankPermissions: MutableMap<String, Int> = mutableMapOf()
+    private var defaultPermission = -1
 
     fun addMarker(marker: POIMarker, worldName: String, playerUUID: UUID) {
         val markerSet = markerSets["BANNER_MARKER_$worldName"]
@@ -104,6 +107,14 @@ object MarkerManager {
         playerMarkerMap.forEach { (uuid, markers) ->
             playerMarkers[uuid] = markers
         }
+
+        // Load perms
+        val ranks = config.getConfigurationSection("max-marker-per-player")
+        ranks?.getKeys(false)?.forEach { perm ->
+            val amount = ranks.getInt(perm)
+            if (perm == "default") defaultPermission = amount
+            else rankPermissions["banner-marker.max-marker.$perm"] = amount
+        }
     }
 
     fun saveAllMarker() {
@@ -125,5 +136,13 @@ object MarkerManager {
         val markerFolder = File("${sourceFolder.path}/marker")
         if (!markerFolder.exists()) markerFolder.mkdir()
         return markerFolder
+    }
+
+    fun getMaxAmount(player: Player): Int {
+        var maxAmount = defaultPermission
+        rankPermissions.forEach { (perm, amount) ->
+            if (maxAmount < amount && player.hasPermission(perm)) maxAmount = amount
+        }
+        return maxAmount
     }
 }

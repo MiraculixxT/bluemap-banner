@@ -40,9 +40,13 @@ block-others-break: false
 
 # The maximum amount of banner markers a player can set.
 # This only blocks NEW marker!
-# Set to -1 for no limit (unlimited markers)
-# Value: integer
-max-marker-per-player: -1
+# Set to -1 for no limit (unlimited markers).
+# The highest permission a player owns defines the max amount of markers.
+# Permission: banner-marker.max-marker.<rank> (default applies to everyone)
+# Value: rank - integer
+max-marker-per-player:
+  default: 10
+  operator: -1
 
 # If players should be notified about marker updates they trigger.
 # Change those messages in the messages.yml file.
