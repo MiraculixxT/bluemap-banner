@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "bm-banner",
+  "version": "105",
+
+  "name": "BlueMap-BannerMarker",
+  "description": "BlueMap extension - Create live markers on your map for every named banner placed in your world! Customizable and optional limitations for players",
+  "authors": ["Miraculixx"],
+  "contact": {
+    "homepage": "https://mutils.net/",
+    "sources": "https://github.com/MiraculixxT/bluemap-banner"
+  },
+
+  "license": "MIT",
+  "icon": "assets/bm-banner/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "de.miraculixx.bmbm.BMBannerKt::init"
+      }
+    ]
+  },
+  "mixins": [
+    "bm-banner.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.10",
+    "fabric-api": "*",
+    "minecraft": "~1.20",
+    "java": ">=17"
+  },
+  "suggests": {}
+}
