@@ -1,19 +1,11 @@
 plugins {
-    kotlin("jvm") version "1.8.22"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.6.20"
+    `kotlin-script`
 }
 
-group = "de.miraculixx"
-version = "1.0.1"
-
-repositories {
-    maven {
-        name = "JitPack"
-        setUrl("https://jitpack.io")
-    }
-    mavenCentral()
-}
-
+val adventureVersion = "4.13.1"
 dependencies {
-    implementation("com.github.BlueMap-Minecraft", "BlueMapAPI", "v2.1.0")
+    implementation("net.kyori:adventure-api:$adventureVersion")
+    implementation("net.kyori:adventure-text-minimessage:$adventureVersion")
+    implementation("net.kyori:adventure-text-serializer-plain:$adventureVersion")
+    implementation("net.kyori:adventure-text-serializer-gson:$adventureVersion")
 }

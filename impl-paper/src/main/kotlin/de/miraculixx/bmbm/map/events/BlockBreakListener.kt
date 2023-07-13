@@ -1,22 +1,22 @@
 package de.miraculixx.bmbm.map.events
 
 import com.flowpowered.math.vector.Vector3d
+import de.miraculixx.bmbm.Listener
 import de.miraculixx.bmbm.map.MarkerManager
 import de.miraculixx.bmbm.utils.config.ConfigManager
 import de.miraculixx.bmbm.utils.config.Configs
-import de.miraculixx.bmbm.utils.interfaces.MultiListener
-import de.miraculixx.bmbm.utils.messages.msg
-import net.axay.kspigot.event.SingleListener
-import net.axay.kspigot.event.listen
-import net.axay.kspigot.event.register
-import net.axay.kspigot.runnables.taskRunLater
+import de.miraculixx.kpaper.event.listen
+import de.miraculixx.kpaper.event.register
+import de.miraculixx.kpaper.event.unregister
+import de.miraculixx.kpaper.localization.msg
+import de.miraculixx.kpaper.runnables.taskRunLater
 import org.bukkit.Material
 import org.bukkit.Tag
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPhysicsEvent
 
-class BlockBreakListener : MultiListener<BlockBreakEvent> {
-    override val listener: SingleListener<BlockBreakEvent> = listen(register = false) {
+class BlockBreakListener : Listener {
+    private val onBlockBreak = listen<BlockBreakEvent> {
         val block = it.block
         val player = it.player
         val uuid = player.uniqueId
@@ -33,7 +33,7 @@ class BlockBreakListener : MultiListener<BlockBreakEvent> {
         MarkerManager.removeMarker(vector, block.world.name, uuid)
     }
 
-    private val onBlockPhysics = listen<BlockPhysicsEvent>(register = false) {
+    private val onBlockPhysics = listen<BlockPhysicsEvent> {
         val block = it.block
         if (!Tag.BANNERS.isTagged(block.type)) return@listen
         val loc = block.location
@@ -47,10 +47,14 @@ class BlockBreakListener : MultiListener<BlockBreakEvent> {
         }
     }
 
-    override val sideListener: List<SingleListener<*>> = listOf(onBlockPhysics)
 
     override fun register() {
-        listener.register()
+        onBlockBreak.register()
         onBlockPhysics.register()
+    }
+
+    override fun unregister() {
+        onBlockBreak.unregister()
+        onBlockPhysics.unregister()
     }
 }

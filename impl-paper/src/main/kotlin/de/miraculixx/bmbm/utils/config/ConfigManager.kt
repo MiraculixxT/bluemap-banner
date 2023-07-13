@@ -14,7 +14,6 @@ object ConfigManager {
     init {
         // Loading Default Configs
         configMap[Configs.SETTINGS] = Config("settings")
-        configMap[Configs.LANGUAGE] = Config("messages")
     }
 
     fun reload(type: Configs) {

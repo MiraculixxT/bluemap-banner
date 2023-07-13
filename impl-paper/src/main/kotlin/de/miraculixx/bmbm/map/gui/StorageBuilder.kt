@@ -1,10 +1,13 @@
 package de.miraculixx.bmbm.map.gui
 
 import de.miraculixx.bmbm.utils.messages.cHighlight
-import de.miraculixx.bmbm.utils.messages.cmp
-import de.miraculixx.bmbm.utils.messages.emptyComponent
-import de.miraculixx.bmbm.utils.messages.plus
-import net.axay.kspigot.items.*
+import de.miraculixx.kpaper.extensions.bukkit.cmp
+import de.miraculixx.kpaper.extensions.bukkit.emptyComponent
+import de.miraculixx.kpaper.extensions.bukkit.plus
+import de.miraculixx.kpaper.items.customModel
+import de.miraculixx.kpaper.items.itemStack
+import de.miraculixx.kpaper.items.meta
+import de.miraculixx.kpaper.items.name
 import net.kyori.adventure.text.Component
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -165,9 +168,9 @@ class StorageGUI(
                             cmp("∙ ${filterName ?: "No Filter"}"),
                             emptyComponent(),
                             cmp("Click ", cHighlight) + cmp("≫ Change Filter")
-                            )
+                        )
                     )
-                    persistentDataContainer.set(NamespacedKey("miraculixx-api","gui.storage.filter"), PersistentDataType.STRING, finalFilter ?: "No Filter")
+                    persistentDataContainer.set(NamespacedKey("miraculixx-api", "gui.storage.filter"), PersistentDataType.STRING, finalFilter ?: "No Filter")
                 }
             })
         }
@@ -179,6 +182,7 @@ class StorageGUI(
                 when (item.type) {
                     Material.PLAYER_HEAD, Material.ZOMBIE_HEAD, Material.SKELETON_SKULL, Material.CHEST,
                     Material.ENDER_CHEST, Material.TRAPPED_CHEST -> item.type = Material.LIME_STAINED_GLASS_PANE
+
                     else -> {}
                 }
 

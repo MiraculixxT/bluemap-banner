@@ -1,50 +1,61 @@
 package de.miraculixx.bmbm.commands
 
+import de.bluecolored.bluemap.api.markers.POIMarker
 import de.miraculixx.bmbm.PluginManager
 import de.miraculixx.bmbm.map.MarkerManager
 import de.miraculixx.bmbm.map.gui.storageBuilder
-import de.miraculixx.bmbm.utils.messages.*
-import net.axay.kspigot.extensions.bukkit.register
-import net.axay.kspigot.extensions.onlinePlayers
-import net.axay.kspigot.extensions.worlds
-import net.axay.kspigot.items.customModel
-import net.axay.kspigot.items.itemStack
-import net.axay.kspigot.items.meta
-import net.axay.kspigot.items.name
+import de.miraculixx.bmbm.utils.messages.cHighlight
+import de.miraculixx.bmbm.utils.messages.cMark
+import de.miraculixx.kpaper.extensions.bukkit.cmp
+import de.miraculixx.kpaper.extensions.bukkit.plus
+import de.miraculixx.kpaper.extensions.worlds
+import de.miraculixx.kpaper.items.customModel
+import de.miraculixx.kpaper.items.itemStack
+import de.miraculixx.kpaper.items.meta
+import de.miraculixx.kpaper.items.name
+import de.miraculixx.kpaper.localization.msg
+import dev.jorel.commandapi.kotlindsl.commandTree
+import dev.jorel.commandapi.kotlindsl.literalArgument
+import dev.jorel.commandapi.kotlindsl.offlinePlayerArgument
+import dev.jorel.commandapi.kotlindsl.playerExecutor
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.*
-import org.bukkit.command.Command
-import org.bukkit.command.CommandSender
-import org.bukkit.command.TabExecutor
 import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.SkullMeta
 import org.bukkit.persistence.PersistentDataType
 import java.util.*
 
-class OverviewCommand : TabExecutor {
-    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        if (sender !is Player) {
-            sender.sendMessage(msg("command.no-player"))
-            return false
+class OverviewCommand {
+    val command = commandTree("bmbanner", { it.hasPermission("bmb.overview") }) {
+        withAliases("bmb")
+        literalArgument("global") {
+            playerExecutor { player, _ ->
+                val markers = MarkerManager.getMarkers()
+                openGUI(player, null, markers)
+            }
         }
-
-        val target = if (args.isEmpty()) sender else Bukkit.getOfflinePlayer(args[0])
-        val markers = MarkerManager.getMarkers(target.uniqueId)
-        if (markers.isEmpty()) {
-            sender.sendMessage(msg("command.no-marker", listOf(target.name ?: "Unknown")))
-            return false
+        offlinePlayerArgument("target") {
+            playerExecutor { player, args ->
+                val target = Bukkit.getOfflinePlayer(args[0] as String)
+                val markers = MarkerManager.getMarkers(target.uniqueId)
+                if (markers.isEmpty()) {
+                    player.sendMessage(msg("command.no-marker", listOf(target.name ?: "Unknown")))
+                    return@playerExecutor
+                }
+                openGUI(player, target, markers)
+            }
         }
+    }
 
-        //BUILD GUI
+    private fun openGUI(player: Player, target: OfflinePlayer?, markers: Map<POIMarker, String>) {
         storageBuilder {
-            player = sender
-            title = cmp("Banner Markers - ", cHighlight, bold = true) + cmp(sender.name, cHighlight)
+            title = cmp("Banner Markers - ", cHighlight, bold = true) + cmp(target?.name ?: "Global", cHighlight)
             header = itemStack(Material.PLAYER_HEAD) {
                 meta<SkullMeta> {
                     owningPlayer = target
-                    name = cmp("${target.name}'s Marker", cHighlight, bold = true)
-                    lore(listOf(cmp(target.uniqueId.toString(), NamedTextColor.DARK_GRAY)))
+                    name = cmp("${target?.name}'s Marker", cHighlight, bold = true)
+                    lore(listOf(cmp(target?.uniqueId.toString(), NamedTextColor.DARK_GRAY)))
                 }
             }
             filterable = true
@@ -66,7 +77,7 @@ class OverviewCommand : TabExecutor {
                                 persistentDataContainer.set(
                                     NamespacedKey(PluginManager, "marker-${UUID.randomUUID()}"),
                                     PersistentDataType.STRING,
-                                    "${vector.x}:${vector.y}:${vector.z}:$worldName:${target.uniqueId}"
+                                    "${vector.x}:${vector.y}:${vector.z}:$worldName:${target?.uniqueId}"
                                 )
                                 lore(
                                     listOf(
@@ -84,19 +95,6 @@ class OverviewCommand : TabExecutor {
                 }
             }
         }.open()
-        sender.playSound(sender, Sound.BLOCK_ENDER_CHEST_OPEN, 1f, 1f)
-        return true
-    }
-
-    override fun onTabComplete(sender: CommandSender, command: Command, label: String, args: Array<out String>?): MutableList<String> {
-        return buildList {
-            when (args?.size ?: 0) {
-                0, 1 -> addAll(onlinePlayers.map { it.name })
-            }
-        }.filter { it.startsWith(args?.lastOrNull() ?: "") }.toMutableList()
-    }
-
-    init {
-        register("banner-marker")
+        player.playSound(player, Sound.BLOCK_ENDER_CHEST_OPEN, 1f, 1f)
     }
 }

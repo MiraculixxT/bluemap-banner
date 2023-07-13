@@ -1,13 +1,15 @@
 package de.miraculixx.bmbm.map.gui
 
 import com.flowpowered.math.vector.Vector3d
+import de.miraculixx.bmbm.Listener
 import de.miraculixx.bmbm.map.MarkerManager
-import de.miraculixx.bmbm.utils.interfaces.Listener
-import de.miraculixx.bmbm.utils.messages.msg
 import de.miraculixx.bmbm.utils.messages.plainSerializer
-import net.axay.kspigot.event.SingleListener
-import net.axay.kspigot.event.listen
-import net.axay.kspigot.items.customModel
+import de.miraculixx.kpaper.event.SingleListener
+import de.miraculixx.kpaper.event.listen
+import de.miraculixx.kpaper.event.register
+import de.miraculixx.kpaper.event.unregister
+import de.miraculixx.kpaper.items.customModel
+import de.miraculixx.kpaper.localization.msg
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Sound
@@ -16,8 +18,8 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.persistence.PersistentDataType
 import java.util.*
 
-class ClickManager : Listener<InventoryClickEvent> {
-    override val listener: SingleListener<InventoryClickEvent> = listen {
+class ClickManager : Listener {
+    private val listener: SingleListener<InventoryClickEvent> = listen {
         val player = it.whoClicked as? Player ?: return@listen
         val title = plainSerializer.serialize(it.view.title())
         if (!title.startsWith("Banner Markers - ")) return@listen
@@ -46,6 +48,10 @@ class ClickManager : Listener<InventoryClickEvent> {
     }
 
     //Constantly keep this listener running to prevent item glitching
-    override fun register() {}
-    override fun unregister() {}
+    override fun register() {
+        listener.register()
+    }
+    override fun unregister() {
+        listener.unregister()
+    }
 }

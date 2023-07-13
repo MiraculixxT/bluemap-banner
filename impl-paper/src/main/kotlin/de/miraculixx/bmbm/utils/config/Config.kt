@@ -1,8 +1,11 @@
 package de.miraculixx.bmbm.utils.config
 
 import de.miraculixx.bmbm.PluginManager
+import de.miraculixx.bmbm.utils.messages.cError
 import de.miraculixx.bmbm.utils.messages.prefix
-import net.axay.kspigot.extensions.console
+import de.miraculixx.kpaper.extensions.bukkit.cmp
+import de.miraculixx.kpaper.extensions.bukkit.plus
+import de.miraculixx.kpaper.extensions.console
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
@@ -29,8 +32,7 @@ class Config(private val name: String) {
             config.load(configFile)
         } catch (e: Exception) {
             e.printStackTrace()
-            console.sendMessage("$prefix §c$name.yml Config failed to load! ^^ Reason above ^^")
-            console.sendMessage("$prefix §cCopy and Save your §nlatest.log§f §cto get Support!")
+            console.sendMessage(prefix + cmp("$name.yml Config failed to load! ^^ Reason above ^^", cError))
         }
     }
 

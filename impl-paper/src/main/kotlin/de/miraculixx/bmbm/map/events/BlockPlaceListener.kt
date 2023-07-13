@@ -1,12 +1,14 @@
 package de.miraculixx.bmbm.map.events
 
 import de.bluecolored.bluemap.api.markers.POIMarker
+import de.miraculixx.bmbm.Listener
 import de.miraculixx.bmbm.map.MarkerManager
 import de.miraculixx.bmbm.utils.cache.bannerImages
 import de.miraculixx.bmbm.utils.config.ConfigManager
 import de.miraculixx.bmbm.utils.config.Configs
 import de.miraculixx.bmbm.utils.interfaces.Listener
 import de.miraculixx.bmbm.utils.messages.*
+import de.miraculixx.kpaper.event.listen
 import net.axay.kspigot.event.SingleListener
 import net.axay.kspigot.event.listen
 import net.axay.kspigot.event.register
@@ -16,8 +18,8 @@ import org.bukkit.DyeColor
 import org.bukkit.Material
 import org.bukkit.event.block.BlockPlaceEvent
 
-class BlockPlaceListener : Listener<BlockPlaceEvent> {
-    override val listener: SingleListener<BlockPlaceEvent> = listen(register = false) {
+class BlockPlaceListener : Listener {
+    private val onPlace = listen<BlockPlaceEvent> {
         val block = it.block
         if (!block.type.name.endsWith("_BANNER")) return@listen
         val player = it.player

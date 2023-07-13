@@ -9,13 +9,14 @@ import de.bluecolored.bluemap.api.markers.POIMarker
 import de.miraculixx.bmbm.PluginManager
 import de.miraculixx.bmbm.utils.config.ConfigManager
 import de.miraculixx.bmbm.utils.config.Configs
+import de.miraculixx.bmbm.utils.messages.cError
 import de.miraculixx.bmbm.utils.serializer.json
+import de.miraculixx.kpaper.extensions.bukkit.cmp
+import de.miraculixx.kpaper.extensions.console
+import de.miraculixx.kpaper.extensions.kotlin.createIfNotExists
+import de.miraculixx.kpaper.extensions.worlds
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
-import net.axay.kspigot.extensions.bukkit.warn
-import net.axay.kspigot.extensions.console
-import net.axay.kspigot.extensions.worlds
-import net.axay.kspigot.languageextensions.kotlinextensions.createIfNotExists
 import org.bukkit.entity.Player
 import java.io.File
 import java.util.*
@@ -30,7 +31,7 @@ object MarkerManager {
         val markerSet = markerSets["BANNER_MARKER_$worldName"]
 
         if (markerSet == null) {
-            console.warn("Failed to apply marker to $worldName! Please reload BlueMap after creating new worlds")
+            console.sendMessage(cmp("Failed to apply marker to $worldName! Please reload BlueMap after creating new worlds", cError))
             return
         }
 
@@ -55,11 +56,22 @@ object MarkerManager {
 
     fun getMarkers(playerUUID: UUID): Map<POIMarker, String> {
         return buildMap {
-            val playerMarkers = playerMarkers[playerUUID] ?: return emptyMap()
+            val markers = playerMarkers[playerUUID] ?: return emptyMap()
             markerSets.forEach { (worldSet, sets) ->
                 val worldName = worldSet.removePrefix("BANNER_MARKER_")
                 sets.markers.forEach { (_, marker) ->
-                    if (playerMarkers.contains(marker.position)) (marker as? POIMarker)?.let { put(it, worldName) }
+                    if (markers.contains(marker.position)) (marker as? POIMarker)?.let { put(it, worldName) }
+                }
+            }
+        }
+    }
+
+    fun getMarkers(): Map<POIMarker, String> {
+        return buildMap {
+            markerSets.forEach { (worldSet, sets) ->
+                val worldName = worldSet.removePrefix("BANNER_MARKER_")
+                sets.markers.forEach { (_, marker) ->
+                    (marker as? POIMarker)?.let { put(it, worldName) }
                 }
             }
         }
@@ -103,10 +115,12 @@ object MarkerManager {
         val file = File("${folder.path}/player_markers.json")
         file.createIfNotExists()
         val content = file.readText()
-        val playerMarkerMap = json.decodeFromString<MutableMap<UUID, MutableList<Vector3d>>>(content) //works
-        playerMarkerMap.forEach { (uuid, markers) ->
-            playerMarkers[uuid] = markers
-        }
+        try {
+            val playerMarkerMap = json.decodeFromString<MutableMap<UUID, MutableList<Vector3d>>>(content.ifBlank { "{}" }) //works - (update 1.1) now
+            playerMarkerMap.forEach { (uuid, markers) ->
+                playerMarkers[uuid] = markers
+            }
+        } catch (_: Exception) {}
 
         // Load perms
         val ranks = config.getConfigurationSection("max-marker-per-player")

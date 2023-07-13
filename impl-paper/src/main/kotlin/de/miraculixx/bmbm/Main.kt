@@ -9,20 +9,25 @@ import de.miraculixx.bmbm.map.gui.ClickManager
 import de.miraculixx.bmbm.utils.cache.MarkerImages
 import de.miraculixx.bmbm.utils.config.ConfigManager
 import de.miraculixx.bmbm.utils.config.Configs
-import de.miraculixx.bmbm.utils.interfaces.Listener
-import net.axay.kspigot.main.KSpigot
+import de.miraculixx.kpaper.localization.Localization
+import de.miraculixx.kpaper.main.KPaper
+import de.miraculixx.kpaper.main.KPaperConfiguration
 import java.util.function.Consumer
 
-class Main : KSpigot() {
+class Main : KPaper() {
     companion object {
-        lateinit var INSTANCE: KSpigot
+        lateinit var INSTANCE: KPaper
     }
 
-    private lateinit var listener: List<Listener<*>>
+    private lateinit var listener: List<Listener>
     private lateinit var assetsLoader: MarkerImages
+    private lateinit var localizer: Localization
 
     override fun startup() {
         INSTANCE = this
+
+        // Setup
+        KPaperConfiguration.Events.autoRegistration = false
 
         // Load Content
         assetsLoader = MarkerImages()

@@ -17,6 +17,7 @@ import de.miraculixx.bmbm.utils.plus
 import de.miraculixx.bmbm.utils.serializer.json
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import net.axay.kspigot.languageextensions.kotlinextensions.createIfNotExists
 import org.bukkit.entity.Player
 import java.io.File
@@ -103,9 +104,9 @@ object MarkerManager {
         }
 
         val file = File("${folder.path}/player_markers.json")
-        file.createIfNotExists()
-        val content = file.readText()
-        val playerMarkerMap = json.decodeFromString<MutableMap<UUID, MutableList<Vector3d>>>(content) //works
+        if (!file.exists()) file.createNewFile()
+        val content = file.readText().ifBlank { "{}" }
+        val playerMarkerMap = Json.decodeFromString<MutableMap<UUID, MutableList<Vector3d>>>(content) //works
         playerMarkerMap.forEach { (uuid, markers) ->
             playerMarkers[uuid] = markers
         }

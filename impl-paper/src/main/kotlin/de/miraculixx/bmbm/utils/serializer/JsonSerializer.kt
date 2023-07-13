@@ -1,5 +1,6 @@
 package de.miraculixx.bmbm.utils.serializer
 
+import de.miraculixx.kpaper.serialization.UUIDSerializer
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
