@@ -37,7 +37,7 @@ class BlockBreakListener : Listener {
         val block = it.block
         if (!Tag.BANNERS.isTagged(block.type)) return@listen
         val loc = block.location
-        // vvv This is awful. If anyone know a better solution, please DM me! vvv
+        // Vvv This is awful. If anyone knows a better solution, please DM me! Vvv
         taskRunLater(1, false) {
             if (loc.block.type == Material.AIR) {
                 val vector = Vector3d.from(loc.x, loc.y, loc.z)

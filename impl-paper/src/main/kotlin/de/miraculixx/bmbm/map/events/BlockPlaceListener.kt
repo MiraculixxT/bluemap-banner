@@ -6,14 +6,17 @@ import de.miraculixx.bmbm.map.MarkerManager
 import de.miraculixx.bmbm.utils.cache.bannerImages
 import de.miraculixx.bmbm.utils.config.ConfigManager
 import de.miraculixx.bmbm.utils.config.Configs
-import de.miraculixx.bmbm.utils.interfaces.Listener
-import de.miraculixx.bmbm.utils.messages.*
+import de.miraculixx.bmbm.utils.messages.cError
+import de.miraculixx.bmbm.utils.messages.plainSerializer
+import de.miraculixx.bmbm.utils.messages.prefix
 import de.miraculixx.kpaper.event.listen
-import net.axay.kspigot.event.SingleListener
-import net.axay.kspigot.event.listen
-import net.axay.kspigot.event.register
-import net.axay.kspigot.extensions.console
-import net.axay.kspigot.items.name
+import de.miraculixx.kpaper.event.register
+import de.miraculixx.kpaper.event.unregister
+import de.miraculixx.kpaper.extensions.bukkit.cmp
+import de.miraculixx.kpaper.extensions.bukkit.plus
+import de.miraculixx.kpaper.extensions.console
+import de.miraculixx.kpaper.items.name
+import de.miraculixx.kpaper.localization.msg
 import org.bukkit.DyeColor
 import org.bukkit.Material
 import org.bukkit.event.block.BlockPlaceEvent
@@ -78,11 +81,11 @@ class BlockPlaceListener : Listener {
             return@listen
         }
 
-        val newMarker = POIMarker.toBuilder().apply {
+        val newMarker = POIMarker.builder().apply {
             val labelAddition = config.getString("label-suffix")?.replace("<player>", player.name) ?: ""
             label(plainSerializer.serialize(name) + labelAddition)
             icon(icon.content, icon.width / 2, icon.height)
-            position(block.x, block.y, block.z)
+            position(block.x.toDouble(), block.y.toDouble(), block.z.toDouble())
 
             val maxDistance = config.getDouble("max-view-distance")
             if (maxDistance > 0) maxDistance(maxDistance)
@@ -92,6 +95,10 @@ class BlockPlaceListener : Listener {
     }
 
     override fun register() {
-        listener.register()
+        onPlace.register()
+    }
+
+    override fun unregister() {
+        onPlace.unregister()
     }
 }
