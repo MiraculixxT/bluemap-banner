@@ -37,14 +37,13 @@ object MarkerManager {
             return
         }
 
-        println("I WAS HERE - $worldName")
         markerSet.markers[marker.position.stringify()] = marker
 
-        val maps = BlueMapAPI.getInstance().get().getWorld(worldName)?.get()?.maps
-        if (maps == null) println("o7")
-        maps?.forEach { map ->
-            println(map.markerSets["BANNER_MARKER_${worldName}"]?.markers.toString())
-        }
+//        val maps = BlueMapAPI.getInstance().get().getWorld(worldName)?.get()?.maps
+//        if (maps == null) println("o7")
+//        maps?.forEach { map ->
+//            println(map.markerSets["BANNER_MARKER_${worldName}"]?.markers.toString())
+//        }
 
         playerMarkers.getOrPut(playerUUID) {
             mutableSetOf()

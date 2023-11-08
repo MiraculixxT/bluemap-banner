@@ -39,7 +39,7 @@ class BlockPlaceListener : Listener {
         val item = it.itemInHand
         val name = item.itemMeta?.name ?: return@listen
 
-        if (blockedWorlds.contains(name.toLegacyString())) {
+        if (blacklistedWords.contains(name.toLegacyString())) {
             // Do not do anything on blacklist
             return@listen
         }
