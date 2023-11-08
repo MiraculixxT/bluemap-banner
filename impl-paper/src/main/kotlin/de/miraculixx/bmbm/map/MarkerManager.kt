@@ -25,7 +25,7 @@ import java.util.*
 
 object MarkerManager {
     private val markerSets: MutableMap<String, MarkerSet> = mutableMapOf()
-    private val playerMarkers: MutableMap<UUID, MutableList<Vector3d>> = mutableMapOf()
+    private val playerMarkers: MutableMap<UUID, MutableSet<Vector3d>> = mutableMapOf()
     private val rankPermissions: MutableMap<String, Int> = mutableMapOf()
     private var defaultPermission = -1
 
@@ -39,7 +39,7 @@ object MarkerManager {
 
         markerSet.markers[marker.position.stringify()] = marker
         playerMarkers.getOrPut(playerUUID) {
-            mutableListOf(marker.position)
+            mutableSetOf()
         }.add(marker.position)
     }
 
@@ -109,7 +109,7 @@ object MarkerManager {
             markerSets["BANNER_MARKER_$worldName"] = set
             blueMapAPI.getWorld(world.uid).ifPresent {
                 it.maps.forEach { map ->
-                    map.markerSets["BANNER_MARKER_${world.name}"] = set
+                    map.markerSets["BANNER_MARKER_${worldName}"] = set
                 }
             }
         }
@@ -117,7 +117,7 @@ object MarkerManager {
         file.createIfNotExists()
         val content = file.readText()
         try {
-            val playerMarkerMap = json.decodeFromString<MutableMap<UUID, MutableList<Vector3d>>>(content.ifBlank { "{}" }) //works - (update 1.1) now
+            val playerMarkerMap = json.decodeFromString<MutableMap<UUID, MutableSet<Vector3d>>>(content.ifBlank { "{}" }) //works - (update 1.1) now
             playerMarkerMap.forEach { (uuid, markers) ->
                 playerMarkers[uuid] = markers
             }
