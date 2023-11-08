@@ -32,6 +32,9 @@ label-suffix: " - <player>"
 #          Marker Behavior Settings           #
 #---------------------------------------------#
 
+# Change it to any name of a file located in the language folder (en_US & de_DE provided)
+language: "en_US"
+
 # Block other players from breaking your banner marker.
 # Bypass Permission: banner-marker.event.break-others
 # WARNING - Currently disabled because of block update bugs that causes exploits
@@ -58,3 +61,8 @@ notify-player: true
 disabled-worlds:
   - "name-of-block-world"
   - "different blocked world"
+
+# Do not place markers if the player sneaked while placing a marker.
+# Activate this setting to prevent unwanted markers on your map!
+# Value: true / false
+sneak-blocking: false

@@ -1,4 +1,4 @@
-package de.miraculixx.bmbm
+package de.miraculixx.bmbm.utils
 
 interface Listener {
     fun register()

@@ -6,7 +6,7 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":vanilla"))
+//    implementation(project(":vanilla"))
 }
 
 sourceSets {

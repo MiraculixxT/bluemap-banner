@@ -17,7 +17,7 @@ class MarkerImages {
     fun loadImages(blueMapAPI: BlueMapAPI) {
         val webApp = blueMapAPI.webApp
         bannerImages = buildMap {
-            DyeColor.values().forEach { put(it, loadImage("marker_${it.name}.png", webApp)) }
+            DyeColor.entries.forEach { put(it, loadImage("marker_${it.name}.png", webApp)) }
         }
     }
 
@@ -35,7 +35,7 @@ class MarkerImages {
         val assetsFolder = File("$dataFolder/assets")
         assetsFolder.mkdirs()
         val mainClass = this::class.java
-        DyeColor.values().forEach { dye ->
+        DyeColor.entries.forEach { dye ->
             val assetName = "marker_${dye.name}.png"
             val targetFile = File("${assetsFolder.path}/$assetName")
             if (targetFile.exists()) return@forEach //Marker texture is already present, skip...

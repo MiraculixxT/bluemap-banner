@@ -8,7 +8,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 object Vector3dSerializer : KSerializer<Vector3d> {
-    override val descriptor = PrimitiveSerialDescriptor("UUID", PrimitiveKind.STRING)
+    override val descriptor = PrimitiveSerialDescriptor("Vector3D", PrimitiveKind.STRING)
 
     override fun deserialize(decoder: Decoder): Vector3d {
         val split = decoder.decodeString().split(':')

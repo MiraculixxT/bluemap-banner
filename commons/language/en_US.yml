@@ -8,6 +8,10 @@
 #           you can use - <input-i>             #
 #-----------------------------------------------#
 
+version: 1.0.0
+author: Miraculixx
+
+
 event:
   # Input 1 -> Max Amount
   limited: "<red>You reached your max amount of markers! <dark_gray>(<gray><input-1></gray>)\nSneak to place it without any marker"
@@ -20,6 +24,7 @@ event:
   teleport: "<green>You will be teleported as soon as the server load all chunks... <dark_gray>[<gray><click:run_command:'/tp <input-1>'><hover:show_text:'<gray>Teleport directly<br><red>This can impact server tick rate'>Teleport Now</hover></click></gray>]"
   # Input 1 -> Player Name | Input 2 -> World Name
   delete: "<green>Marker successfully deleted! <dark_gray>[<gray><click:run_command:'/bmb'><hover:show_text:'<gray>Click to reopen <input-1>´s markers'>Reopen GUI</hover></click></gray>]"
+  sneak: "<grey>No markers created while sneaking"
 
 command:
   no-player: "<red>This command only works for players!"

@@ -10,8 +10,10 @@ import de.miraculixx.bmbm.PluginManager
 import de.miraculixx.bmbm.utils.config.ConfigManager
 import de.miraculixx.bmbm.utils.config.Configs
 import de.miraculixx.bmbm.utils.messages.cError
+import de.miraculixx.bmbm.utils.messages.prefix
 import de.miraculixx.bmbm.utils.serializer.json
 import de.miraculixx.kpaper.extensions.bukkit.cmp
+import de.miraculixx.kpaper.extensions.bukkit.plus
 import de.miraculixx.kpaper.extensions.console
 import de.miraculixx.kpaper.extensions.kotlin.createIfNotExists
 import de.miraculixx.kpaper.extensions.worlds
@@ -35,7 +37,7 @@ object MarkerManager {
             return
         }
 
-        markerSet.markers[marker.position.toString()] = marker
+        markerSet.markers[marker.position.stringify()] = marker
         playerMarkers.getOrPut(playerUUID) {
             mutableListOf(marker.position)
         }.add(marker.position)
@@ -44,7 +46,7 @@ object MarkerManager {
     fun removeMarker(marker: Vector3d, worldName: String, playerUUID: UUID): Boolean {
         val markerSet = markerSets["BANNER_MARKER_$worldName"] ?: return false
         playerMarkers[playerUUID]?.remove(marker)
-        return markerSet.markers.remove(marker.toString()) != null
+        return markerSet.markers.remove(marker.stringify()) != null
     }
 
     fun getMarkerOwner(vector3d: Vector3d): UUID? {
@@ -79,18 +81,17 @@ object MarkerManager {
 
     fun loadAllMarker(blueMapAPI: BlueMapAPI) {
         val gson = MarkerGson.INSTANCE
-        val logger = PluginManager.logger
         val config = ConfigManager.getConfig(Configs.SETTINGS)
         val folder = prepareConfigFolder()
         worlds.forEach { world ->
             val worldName = world.name
             val markerFile = File("${folder.path}/${worldName}.json")
             val set = if (markerFile.exists()) {
-                logger.info("Found markers for world '$worldName' - Loading ${markerFile.length() / 1000.0}kb")
+                console.sendMessage(prefix + cmp("Found markers for world '$worldName' - Loading ${markerFile.length() / 1000.0}kb"))
                 try {
                     gson.fromJson(markerFile.readText(), MarkerSet::class.java)
                 } catch (e: JsonSyntaxException) {
-                    logger.warning("Marker file for world $worldName is invalid! Skipping it...")
+                    console.sendMessage(cmp("Marker file for world $worldName is invalid! Skipping it..."))
                     return@forEach
                 }.apply {
                     label = config.getString("marker-set-label")
@@ -155,8 +156,18 @@ object MarkerManager {
     fun getMaxAmount(player: Player): Int {
         var maxAmount = defaultPermission
         rankPermissions.forEach { (perm, amount) ->
+            if (amount == -1 && player.hasPermission(perm)) return -1
             if (maxAmount < amount && player.hasPermission(perm)) maxAmount = amount
         }
         return maxAmount
+    }
+
+    private fun Vector3d.stringify(): String {
+        return toString()
+            .removePrefix("(")
+            .removeSuffix(")")
+            .replace(",", "")
+            .replace(".", "")
+            .replace(" ", "_")
     }
 }
