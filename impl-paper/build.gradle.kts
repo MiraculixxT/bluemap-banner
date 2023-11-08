@@ -9,6 +9,8 @@ dependencies {
 //    implementation(project(":vanilla"))
 }
 
+version = "1.0"
+
 sourceSets {
     main {
         resources.srcDirs("$rootDir/commons/")
