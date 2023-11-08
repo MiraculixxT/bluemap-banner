@@ -66,3 +66,8 @@ disabled-worlds:
 # Activate this setting to prevent unwanted markers on your map!
 # Value: true / false
 sneak-blocking: false
+
+# Words/names that are disabled and will not be placed onto the map.
+# Use this for swear protection or blacklisted words.
+blocked-words:
+  - "Omnious Banner"

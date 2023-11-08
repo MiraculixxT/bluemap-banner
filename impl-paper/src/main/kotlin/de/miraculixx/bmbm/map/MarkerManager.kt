@@ -37,7 +37,15 @@ object MarkerManager {
             return
         }
 
+        println("I WAS HERE - $worldName")
         markerSet.markers[marker.position.stringify()] = marker
+
+        val maps = BlueMapAPI.getInstance().get().getWorld(worldName)?.get()?.maps
+        if (maps == null) println("o7")
+        maps?.forEach { map ->
+            println(map.markerSets["BANNER_MARKER_${worldName}"]?.markers.toString())
+        }
+
         playerMarkers.getOrPut(playerUUID) {
             mutableSetOf()
         }.add(marker.position)
@@ -83,6 +91,7 @@ object MarkerManager {
         val gson = MarkerGson.INSTANCE
         val config = ConfigManager.getConfig(Configs.SETTINGS)
         val folder = prepareConfigFolder()
+
         worlds.forEach { world ->
             val worldName = world.name
             val markerFile = File("${folder.path}/${worldName}.json")
@@ -121,7 +130,8 @@ object MarkerManager {
             playerMarkerMap.forEach { (uuid, markers) ->
                 playerMarkers[uuid] = markers
             }
-        } catch (_: Exception) {}
+        } catch (_: Exception) {
+        }
 
         // Load perms
         val ranks = config.getConfigurationSection("max-marker-per-player")

@@ -14,6 +14,7 @@ import de.miraculixx.kpaper.event.register
 import de.miraculixx.kpaper.event.unregister
 import de.miraculixx.kpaper.extensions.bukkit.cmp
 import de.miraculixx.kpaper.extensions.bukkit.plus
+import de.miraculixx.kpaper.extensions.bukkit.toLegacyString
 import de.miraculixx.kpaper.extensions.console
 import de.miraculixx.kpaper.items.name
 import de.miraculixx.kpaper.localization.msg
@@ -22,6 +23,8 @@ import org.bukkit.Material
 import org.bukkit.event.block.BlockPlaceEvent
 
 class BlockPlaceListener : Listener {
+    private var blacklistedWords: Set<String> = mutableSetOf()
+
     private val onPlace = listen<BlockPlaceEvent> {
         val block = it.block
         if (!block.type.name.endsWith("_BANNER")) return@listen
@@ -35,6 +38,11 @@ class BlockPlaceListener : Listener {
         // Check if the banner has a name - Only named banners create markers
         val item = it.itemInHand
         val name = item.itemMeta?.name ?: return@listen
+
+        if (blockedWorlds.contains(name.toLegacyString())) {
+            // Do not do anything on blacklist
+            return@listen
+        }
 
         // Check blocked worlds
         if (blockedWorlds.contains(worldName)) {
@@ -102,6 +110,8 @@ class BlockPlaceListener : Listener {
 
     override fun register() {
         onPlace.register()
+        val config = ConfigManager.getConfig(Configs.SETTINGS)
+        blacklistedWords = config.getStringList("blocked-words").toSet()
     }
 
     override fun unregister() {
