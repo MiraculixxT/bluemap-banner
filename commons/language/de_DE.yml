@@ -8,6 +8,9 @@
 #           you can use - <input-i>             #
 #-----------------------------------------------#
 
+version: 1.0.0
+author: Miraculixx
+
 event:
   # Input 1 -> Max Amount
   limited: "<red>Du hast die maximale Anzahl an Banner Markern erreicht! <dark_gray>(<gray><input-1></gray>)\nSneake beim platzieren um keinen Marker zu setzen"
