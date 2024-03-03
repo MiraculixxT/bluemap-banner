@@ -31,6 +31,3 @@ sourceSets {
         resources.srcDirs("$rootDir/timer/data/")
     }
 }
-
-group = "de.miraculixx.timer"
-setProperty("module_name", "timer")

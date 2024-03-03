@@ -13,8 +13,8 @@ libraries:
   - "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
   - "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.4"
   - "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
-  - "dev.jorel:commandapi-bukkit-kotlin:9.2.0"
-  - "dev.jorel:commandapi-bukkit-shade:9.2.0"
+  - "dev.jorel:commandapi-bukkit-kotlin:9.3.0"
+  - "dev.jorel:commandapi-bukkit-shade:9.3.0"
   - "de.miraculixx:kpaper:1.1.1"
 
 commands:
