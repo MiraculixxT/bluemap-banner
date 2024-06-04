@@ -14,16 +14,16 @@ author: Miraculixx
 
 event:
   # Input 1 -> Max Amount
-  limited: "<red>У вас превышено максимальное количество маркеров! <dark_gray>(<gray><input-1></gray>)\nПрисядь, чтобы поставить его без маркера"
+  limited: "<red>У вас превышено максимальное количество маркеров! <dark_gray>(<gray><input-1></gray>)\nПрисядьте, чтобы поставить его без маркера"
   # Input 1 -> Current Amount | Input 2 -> Max Amount
   place: "<gray>Вы создали новый маркер на карте сервера! <dark_gray>(<gray><input-1>/<input-2></gray>)"
-  break: "<gray>Вы убрали ваш маркер с карты сервера! <dark_gray>(<gray><input-1>/<input-2></gray>)"
+  break: "<gray>Вы удалили ваш маркер с карты сервера! <dark_gray>(<gray><input-1>/<input-2></gray>)"
   # Input 1 -> World Name
-  blocked-world: "<red>Этот мир выключен. Маркер не будет создаваться на карте сервера"
+  blocked-world: "<red>Этот мир отключен, поэтому маркер не будет создан на карте сервера"
   # Input 1 -> Teleport Location
   teleport: "<green>Вы телепортируйтесь, как только сервер загрузит все чанки... <dark_gray>[<gray><click:run_command:'/tp <input-1>'><hover:show_text:'<gray>Телепорт сразу<br><red>Это может вызвать лаги сервера'>Телепортироваться сейчас</hover></click></gray>]"
   # Input 1 -> Player Name | Input 2 -> World Name
-  delete: "<green>Маркер был успешно удалён! <dark_gray>[<gray><click:run_command:'/bmb'><hover:show_text:'<gray>Нажми, чтобы заново <input-1>´s markers'>Открыть меню</hover></click></gray>]"
+  delete: "<green>Маркер был успешно удалён! <dark_gray>[<gray><click:run_command:'/bmb'><hover:show_text:'<gray>Нажмите, чтобы открыть маркеры <input-1> заново'>Открыть меню</hover></click></gray>]"
   sneak: "<grey>Маркеры не создаются, если вы на шифте"
 
 command:
