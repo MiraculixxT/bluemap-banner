@@ -13,7 +13,7 @@ tasks {
                 val prefix = "${split.getOrNull(0)}.${split.getOrNull(1)}"
                 val isAPI = split.lastOrNull() == "api"
                 val isModuleAPI = moduleName == split.getOrNull(split.size - 2)
-                prefix == "de.miraculixx" && (!isAPI || isModuleAPI)
+                (prefix == "de.miraculixx" && (!isAPI || isModuleAPI)) || prefix == "dev.jorel"
             }
         }
         val moduleName = properties["module_name"]
