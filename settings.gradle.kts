@@ -8,6 +8,6 @@ pluginManagement {
     }
 }
 
-include("impl-fabric")
+//include("impl-fabric")
 include("impl-paper")
-include("vanilla")
+//include("vanilla")

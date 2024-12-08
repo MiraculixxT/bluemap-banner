@@ -10,10 +10,10 @@ repositories {
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.20.2-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
     compileOnly("de.miraculixx:kpaper:1.1.1")
-    implementation("dev.jorel:commandapi-bukkit-shade:9.5.3")
-    implementation("dev.jorel:commandapi-bukkit-kotlin:9.5.3")
+    implementation("dev.jorel:commandapi-bukkit-shade:9.7.0")
+    implementation("dev.jorel:commandapi-bukkit-kotlin:9.7.0")
 }
 
 tasks {

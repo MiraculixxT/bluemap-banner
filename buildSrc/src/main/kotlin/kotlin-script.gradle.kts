@@ -1,5 +1,3 @@
-import gradle.kotlin.dsl.accessors._a124e2c23f8e366779ee8f0a55e154c9.build
-
 plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
@@ -8,7 +6,7 @@ plugins {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 
@@ -26,10 +24,10 @@ dependencies {
 tasks {
     compileJava {
         options.encoding = "UTF-8"
-        options.release.set(17)
+        options.release.set(21)
     }
     compileKotlin {
-        kotlinOptions.jvmTarget = "17"
+        kotlinOptions.jvmTarget = "21"
     }
 }
 
