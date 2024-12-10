@@ -27,7 +27,8 @@ import org.bukkit.persistence.PersistentDataType
 import java.util.*
 
 class OverviewCommand {
-    val command = commandTree("bmbanner", { it.hasPermission("bmb.overview") }) {
+    val command = commandTree("bmbanner") {
+        withPermission("bmb.overview")
         withAliases("bmb")
         literalArgument("global") {
             playerExecutor { player, _ ->
