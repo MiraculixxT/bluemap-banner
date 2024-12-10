@@ -4,12 +4,6 @@ plugins {
     id("com.modrinth.minotaur")
 }
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(21))
-    }
-}
-
 repositories {
     mavenCentral()
     maven ( "https://jitpack.io" )
@@ -31,7 +25,7 @@ tasks {
     }
 }
 
-version = "1."
+version = "1.1"
 
 modrinth {
     token.set(System.getenv("MODRINTH_TOKEN"))

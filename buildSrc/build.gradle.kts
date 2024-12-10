@@ -31,6 +31,6 @@ dependencies {
     implementation("io.papermc.paperweight.userdev:io.papermc.paperweight.userdev.gradle.plugin:1.7.6")
     implementation(pluginDep("xyz.jpenilla.run-paper", "2.2.4"))
 
-    implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
+    implementation(pluginDep("com.github.johnrengelman.shadow", "8.1.1"))
     implementation(pluginDep("com.modrinth.minotaur", "2.+"))
 }
