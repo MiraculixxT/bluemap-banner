@@ -38,9 +38,9 @@ class Main : KPaper() {
 
         dataFolder.mkdir()
 
-        CoroutineScope(Dispatchers.Default).launch {
-            APIConnector.checkVersion(description.version.toIntOrNull() ?: 0)
-        }
+//        CoroutineScope(Dispatchers.Default).launch {
+//            APIConnector.checkVersion(description.version.toIntOrNull() ?: 0)
+//        }
     }
 
     override fun startup() {
@@ -72,7 +72,7 @@ class Main : KPaper() {
         logger.info("Connect to BlueMap API...")
         assetsLoader.loadImages(it)
         MarkerManager.loadAllMarker(it)
-        Configs.values().forEach { c -> ConfigManager.reload(c) }
+        Configs.entries.forEach { c -> ConfigManager.reload(c) }
         val config = ConfigManager.getConfig(Configs.SETTINGS)
         val languages = listOf("en_US", "de_DE").map { it to javaClass.getResourceAsStream("/language/$it.yml") }
         localization = Localization(File("${dataFolder}/language"), config.getString("language") ?: "en_US", languages)
