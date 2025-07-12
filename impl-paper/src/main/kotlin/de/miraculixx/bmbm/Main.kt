@@ -34,7 +34,7 @@ class Main : KPaper() {
     private lateinit var localizer: Localization
 
     override fun load() {
-        CommandAPI.onLoad(CommandAPIBukkitConfig(this).silentLogs(true))
+        CommandAPI.onLoad(CommandAPIBukkitConfig(this).beLenientForMinorVersions(true))
 
         dataFolder.mkdir()
 

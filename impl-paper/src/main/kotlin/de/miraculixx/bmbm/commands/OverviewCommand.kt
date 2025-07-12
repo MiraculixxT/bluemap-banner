@@ -38,7 +38,7 @@ class OverviewCommand {
         }
         offlinePlayerArgument("target") {
             playerExecutor { player, args ->
-                val target = Bukkit.getOfflinePlayer(args[0] as String)
+                val target = args[0] as OfflinePlayer
                 val markers = MarkerManager.getMarkers(target.uniqueId)
                 if (markers.isEmpty()) {
                     player.sendMessage(msg("command.no-marker", listOf(target.name ?: "Unknown")))

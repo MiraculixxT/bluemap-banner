@@ -15,7 +15,7 @@ import java.net.URL
 
 object APIConnector {
     var isOutdated = false
-    var outdatedMessage = Component.empty().asComponent()
+    var outdatedMessage: Component = Component.empty().asComponent()
 
     fun checkVersion(currentVersion: Int): Boolean {
         val version = try {
