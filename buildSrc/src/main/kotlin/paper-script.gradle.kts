@@ -12,7 +12,7 @@ repositories {
 dependencies {
     paperweight.paperDevBundle("1.21.8-R0.1-SNAPSHOT")
     compileOnly("de.miraculixx:kpaper:1.2.1")
-    implementation("dev.jorel:commandapi-bukkit-shade:10.1.2")
+    implementation("dev.jorel:commandapi-bukkit-shade-mojang-mapped:10.1.2")
     implementation("dev.jorel:commandapi-bukkit-kotlin:10.1.2")
 }
 
