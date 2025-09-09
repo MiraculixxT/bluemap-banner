@@ -67,6 +67,11 @@ disabled-worlds:
 # Value: true / false
 sneak-blocking: false
 
+# Do not place markers if the player sneaked while placing a marker.
+# Activate this setting to prevent unwanted markers on your map!
+# Value: true / false
+sneak-required: false
+
 # Words/names that are disabled and will not be placed onto the map.
 # Use this for swear protection or blacklisted words.
 blocked-words:

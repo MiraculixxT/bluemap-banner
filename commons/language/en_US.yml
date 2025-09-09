@@ -25,6 +25,7 @@ event:
   # Input 1 -> Player Name | Input 2 -> World Name
   delete: "<green>Marker successfully deleted! <dark_gray>[<gray><click:run_command:'/bmb'><hover:show_text:'<gray>Click to reopen <input-1>´s markers'>Reopen GUI</hover></click></gray>]"
   sneak: "<grey>No markers created while sneaking"
+  sneak-required: "<grey>No markers created while not sneaking"
 
 command:
   no-player: "<red>This command only works for players!"

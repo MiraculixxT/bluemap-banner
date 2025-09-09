@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
@@ -7,12 +9,13 @@ plugins {
 repositories {
     mavenCentral()
     maven ( "https://jitpack.io" )
+    maven ( "https://repo.bluecolored.de/releases" )
 }
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    compileOnly("com.github.BlueMap-Minecraft:BlueMapAPI:v2.5.1")
+    compileOnly ("de.bluecolored:bluemap-api:2.7.5")
 }
 
 tasks {
@@ -21,7 +24,7 @@ tasks {
         options.release.set(21)
     }
     compileKotlin {
-        kotlinOptions.jvmTarget = "21"
+        compilerOptions.jvmTarget.set(JvmTarget.JVM_21)
     }
 }
 
