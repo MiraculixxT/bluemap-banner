@@ -8,10 +8,9 @@ import de.miraculixx.kpaper.extensions.bukkit.cmp
 import de.miraculixx.kpaper.extensions.bukkit.plus
 import de.miraculixx.kpaper.extensions.console
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
 import net.kyori.adventure.text.Component
 import java.net.HttpURLConnection
-import java.net.URL
+import java.net.URI
 
 object APIConnector {
     var isOutdated = false
@@ -19,13 +18,13 @@ object APIConnector {
 
     fun checkVersion(currentVersion: Int): Boolean {
         val version = try {
-            val url = URL("https://api.mutils.de/public/version")
+            val url = URI.create("https://api.mutils.de/public/version").toURL()
             val con = url.openConnection() as HttpURLConnection
-            con.requestMethod = "GET";
+            con.requestMethod = "GET"
             con.setRequestProperty("User-Agent", "MUtils-API-1.1")
             con.setRequestProperty("Service", "BMBM")
-            con.doInput = true;
-            con.doOutput = true;
+            con.doInput = true
+            con.doOutput = true
             con.connect()
             json.decodeFromString<Version>(con.inputStream.readBytes().decodeToString())
         } catch (e: Exception) {

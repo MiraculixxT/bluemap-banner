@@ -33,6 +33,7 @@ class BlockPlaceListener : Listener {
         val config = ConfigManager.getConfig(Configs.SETTINGS)
         val blockedWorlds = config.getStringList("disabled-worlds")
         val sneakBlock = config.getBoolean("sneak-blocking")
+        val sneakRequired = config.getBoolean("sneak-required")
         val worldName = player.world.name
 
         // Check if the banner has a name - Only named banners create markers
@@ -51,7 +52,12 @@ class BlockPlaceListener : Listener {
         }
 
         if (sneakBlock && player.isSneaking) {
-            player.sendMessage(msg("event.sneaked"))
+            player.sendMessage(msg("event.sneak"))
+            return@listen
+        }
+
+        if (sneakRequired && !player.isSneaking) {
+            player.sendMessage(msg("event.sneak-required"))
             return@listen
         }
 
