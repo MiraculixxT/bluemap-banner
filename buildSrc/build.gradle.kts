@@ -28,9 +28,9 @@ dependencies {
     implementation(pluginDep("io.github.juuxel.loom-quiltflower", "1.9.0"))
 
     // Paper implementation
-    implementation(pluginDep("io.papermc.paperweight.userdev", "2.0.0-beta.18"))
-    implementation(pluginDep("xyz.jpenilla.run-paper", "2.2.4"))
+    implementation(pluginDep("io.papermc.paperweight.userdev", "2.0.0-beta.19"))
+    implementation(pluginDep("xyz.jpenilla.run-paper", "3.0.0"))
 
-    implementation(pluginDep("com.github.johnrengelman.shadow", "8.1.1"))
+    implementation(pluginDep("com.gradleup.shadow", "9.2.2"))
     implementation(pluginDep("com.modrinth.minotaur", "2.+"))
 }
