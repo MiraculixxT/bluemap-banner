@@ -18,6 +18,6 @@ dependencies {
 
 tasks {
     assemble {
-        dependsOn(reobfJar)
+        //dependsOn(reobfJar)
     }
 }
