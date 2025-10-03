@@ -28,6 +28,12 @@ tasks {
     }
 }
 
+java {
+    toolchain { 
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
 version = "1.1"
 
 modrinth {

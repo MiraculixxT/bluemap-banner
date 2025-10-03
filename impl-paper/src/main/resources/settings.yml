@@ -67,7 +67,7 @@ disabled-worlds:
 # Value: true / false
 sneak-blocking: false
 
-# Do not place markers if the player sneaked while placing a marker.
+# Do not place markers if the player isn't sneaked while placing a marker.
 # Activate this setting to prevent unwanted markers on your map!
 # Value: true / false
 sneak-required: false
