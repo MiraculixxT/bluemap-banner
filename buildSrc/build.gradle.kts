@@ -1,5 +1,6 @@
 plugins {
     `kotlin-dsl`
+    kotlin("jvm") version "1.9.0"
     kotlin("plugin.serialization") version "2.1.0"
 }
 
@@ -22,6 +23,7 @@ dependencies {
     compileOnly(pluginDep("org.jetbrains.kotlin.plugin.serialization", kotlinVersion))
     runtimeOnly(pluginDep("org.jetbrains.kotlin.plugin.serialization", kotlinVersion))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.+")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib")
 
     // Fabric implementation
     implementation("net.fabricmc:fabric-loom:1.8-SNAPSHOT")
@@ -33,4 +35,7 @@ dependencies {
 
     implementation(pluginDep("com.gradleup.shadow", "9.2.2"))
     implementation(pluginDep("com.modrinth.minotaur", "2.+"))
+}
+kotlin {
+    jvmToolchain(21)
 }
