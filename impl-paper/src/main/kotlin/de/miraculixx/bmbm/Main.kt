@@ -16,7 +16,7 @@ import de.miraculixx.kpaper.localization.Localization
 import de.miraculixx.kpaper.main.KPaper
 import de.miraculixx.kpaper.main.KPaperConfiguration
 import dev.jorel.commandapi.CommandAPI
-import dev.jorel.commandapi.CommandAPIBukkitConfig
+import dev.jorel.commandapi.CommandAPIPaperConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,7 +34,7 @@ class Main : KPaper() {
     private lateinit var localizer: Localization
 
     override fun load() {
-        CommandAPI.onLoad(CommandAPIBukkitConfig(this).beLenientForMinorVersions(true))
+        CommandAPI.onLoad(CommandAPIPaperConfig(this).silentLogs(true))
 
         dataFolder.mkdir()
 

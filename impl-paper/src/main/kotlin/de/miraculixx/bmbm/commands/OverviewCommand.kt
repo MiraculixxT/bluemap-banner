@@ -14,9 +14,10 @@ import de.miraculixx.kpaper.items.itemStack
 import de.miraculixx.kpaper.items.meta
 import de.miraculixx.kpaper.items.name
 import de.miraculixx.kpaper.localization.msg
+import dev.jorel.commandapi.CommandAPICommand
 import dev.jorel.commandapi.kotlindsl.commandTree
 import dev.jorel.commandapi.kotlindsl.literalArgument
-import dev.jorel.commandapi.kotlindsl.offlinePlayerArgument
+import dev.jorel.commandapi.kotlindsl.asyncPlayerProfileArgument
 import dev.jorel.commandapi.kotlindsl.playerExecutor
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -36,7 +37,7 @@ class OverviewCommand {
                 openGUI(player, null, markers)
             }
         }
-        offlinePlayerArgument("target") {
+        asyncPlayerProfileArgument("target") {
             playerExecutor { player, args ->
                 val target = args[0] as OfflinePlayer
                 val markers = MarkerManager.getMarkers(target.uniqueId)
@@ -48,7 +49,6 @@ class OverviewCommand {
             }
         }
     }
-
     private fun openGUI(player: Player, target: OfflinePlayer?, markers: Map<POIMarker, String>) {
         storageBuilder {
             title = cmp("Banner Markers - ", cHighlight, bold = true) + cmp(target?.name ?: "Global", cHighlight)
