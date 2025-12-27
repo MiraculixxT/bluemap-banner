@@ -1,0 +1,33 @@
+#-----------------------------------------------#
+# Ce plugin utilise MiniMessages d’Adventure    #
+#           pour afficher les messages !        #
+#                                               #
+# Générateur: https://webui.adventure.kyori.net #
+#-----------------------------------------------#
+# Certains messages contiennent des variables   #
+#          que vous pouvez utiliser : <input-i> #
+#-----------------------------------------------#
+
+version: 1.0.0
+author: Miraculixx
+
+
+event:
+  # Input 1 -> Quantité maximale
+  limited: "<red>Vous avez atteint le nombre maximum de marqueurs ! <dark_gray>(<gray><input-1></gray>)\nAccroupissez-vous pour en placer un sans créer de marqueur"
+  # Input 1 -> Quantité actuelle | Input 2 -> Quantité maximale
+  place: "<gray>Vous avez créé un nouveau marqueur sur la carte web ! <dark_gray>(<gray><input-1>/<input-2></gray>)"
+  break: "<gray>Vous avez supprimé votre marqueur sur la carte web ! <dark_gray>(<gray><input-1>/<input-2></gray>)"
+  # Input 1 -> Nom du monde
+  blocked-world: "<red>Ce monde est désactivé. Aucun marqueur ne sera créé sur la carte web"
+  # Input 1 -> Position de téléportation
+  teleport: "<green>Vous serez téléporté dès que le serveur aura chargé tous les chunks... <dark_gray>[<gray><click:run_command:'/tp <input-1>'><hover:show_text:'<gray>Se téléporter directement<br><red>Cela peut affecter les performances du serveur'>Téléporter maintenant</hover></click></gray>]"
+  # Input 1 -> Nom du joueur | Input 2 -> Nom du monde
+  delete: "<green>Marqueur supprimé avec succès ! <dark_gray>[<gray><click:run_command:'/bmb'><hover:show_text:'<gray>Cliquez pour rouvrir les marqueurs de <input-1>'>Rouvrir l’interface</hover></click></gray>]"
+  sneak: "<grey>Aucun marqueur créé en étant accroupi"
+  sneak-required: "<grey>Aucun marqueur créé si vous n’êtes pas accroupi"
+
+command:
+  no-player: "<red>Cette commande ne fonctionne que pour les joueurs !"
+  # Input 1 -> Nom du joueur
+  no-marker: "<red>Le joueur <underlined><input-1></underlined> n’a aucun marqueur !"
