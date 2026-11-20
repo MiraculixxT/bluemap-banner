@@ -8,7 +8,6 @@ repositories {
     mavenCentral()
     gradlePluginPortal()
     maven("https://maven.fabricmc.net/")
-    maven("https://server.bbkr.space/artifactory/libs-release/")
     maven("https://papermc.io/repo/repository/maven-public/")
     maven("https://maven.quiltmc.org/repository/release/")
     maven("https://repo.codemc.org/repository/maven-public/")
@@ -30,7 +29,7 @@ dependencies {
     // implementation(pluginDep("io.github.juuxel.loom-quiltflower", "1.9.0"))
 
     // Paper implementation
-    implementation(pluginDep("io.papermc.paperweight.userdev", "2.0.0-beta.21"))
+    implementation(pluginDep("io.papermc.paperweight.userdev", "2.0.0-beta.24"))
     implementation(pluginDep("xyz.jpenilla.run-paper", "3.0.0"))
 
     implementation(pluginDep("com.gradleup.shadow", "9.2.2"))

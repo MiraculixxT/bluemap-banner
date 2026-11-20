@@ -5,7 +5,7 @@ description: "A BlueMap addition plugin. Give your players the option to place m
 author: Miraculixx
 website: https://miraculixx.de
 load: STARTUP
-api-version: 26.1
+api-version: 26.3
 depend:
   - "BlueMap"
 libraries:
@@ -13,9 +13,9 @@ libraries:
   - "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
   - "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.4"
   - "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
-  - "dev.jorel:commandapi-paper-shade:11.2.0"
-  - "dev.jorel:commandapi-kotlin-paper:11.2.0"
-  - "dev.jorel:commandapi-kotlin-core:11.2.0"
+  - "dev.jorel:commandapi-paper-shade:12.1.0"
+  - "dev.jorel:commandapi-kotlin-paper:12.1.0"
+  - "dev.jorel:commandapi-kotlin-core:12.1.0"
   - "de.miraculixx:kpaper:1.2.1"
 
 commands:
